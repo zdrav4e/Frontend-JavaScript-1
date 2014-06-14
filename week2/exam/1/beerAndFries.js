@@ -1,15 +1,9 @@
 "use strict";
 
-var filterByType = function (type, data) {
-  return data.filter(function (element) {
-      if (typeof element === "object" && element.type === type) {
-          return element;
-      }
-  });
-};
-
 var getSortedPointsByType = function (type, data) {
-  return filterByType(type, data)
+  return data.filter(function (element) {
+          return element.type === type;
+      })
       .map(function (value) {
           return value.score;
       })
@@ -19,13 +13,10 @@ var getSortedPointsByType = function (type, data) {
 };
 
 var beerAndFries = function(data) {
-
   if (! data instanceof Array) {
     throw new Error("Array expected");
   }
-
   var beerPoints = getSortedPointsByType("beer", data);
-
   var friesPoints = getSortedPointsByType("fries", data);
 
   return beerPoints.map( function (value, index) {
