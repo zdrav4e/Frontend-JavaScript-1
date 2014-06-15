@@ -1,0 +1,30 @@
+.menu-pizzas{
+	float: left;
+ }
+span.timeicon, span.price{
+	background-repeat: no-repeat;	
+	width: 30px;
+	height: 25px;
+	padding-left: 27px;
+	padding-bottom: 3px;
+	padding-top: 3px;
+	margin-left: 10px;
+}
+span.timeicon{
+	background-image: url('./images/timeicon.jpg');
+}
+span.price{
+	background-image: url('./images/euro.png');
+	padding-left: 20px;
+}
+label{
+	display: block;
+	font-weight: normal;
+}
+body{
+	margin-left: 20px;
+}
+.btn-primary{
+  	margin-top: 10px;
+	margin-bottom: 30px;
+}

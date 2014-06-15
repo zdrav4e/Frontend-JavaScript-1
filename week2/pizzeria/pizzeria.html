@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Pizzeria</title>
+	<link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="pizzeria.css">
+</head>
+<body>
+	<h4>Menu</h4>
+
+	<label for="menu-pizzas">
+		<input type="checkbox" name="menu-pizzas" class="menu-pizzas" value="Kuatro formadji" cost="20" timetomake="5000">Kuatro formadji
+		<span class="timeicon">5</span>
+		<span class="price">20</span>
+	</label>
+	
+	<label for="menu-pizzas">
+		<input type="checkbox" name="menu-pizzas" class="menu-pizzas" value="Peperony" cost="15" timetomake="10000">Peperony 
+		<span class="timeicon">10</span>
+		<span class="price">15</span>
+	</label>
+	
+	<label for="menu-pizzas">
+		<input type="checkbox" name="menu-pizzas" class="menu-pizzas" value="Verona" cost="25" timetomake="15000"><span class="pizzaname">Verona</span>
+		<span class="timeicon">15</span>
+		<span class="price">25</span>
+	</label>
+
+	<button type="button" id="order-pizza" class="btn btn-primary">Order pizza</button>
+	
+	<div>Total cost of ready pizzas: <span id="total"></span></div>
+	
+
+	<h5>Ready pizzas: </h5>
+	<ul id="ready-pizzas"></ul>
+
+	<script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="Pizza.js"></script>
+	<script type="text/javascript" src="pizzeria.js"></script>
+</body>
+</html>
