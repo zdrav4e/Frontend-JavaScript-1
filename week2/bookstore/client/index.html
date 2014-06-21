@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bookstore</title>
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>HackBulgaria's Bookstore</h1>
+
+        <div class="row" id="books">
+            
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-xs-12">
+                <h1>Shopping cart:</h1>
+                <p>Total number of pages in cart: <span id="num_pages"></span></p>
+                <div id="books-in-cart"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="bower_components/lodash/dist/lodash.js"></script>
+    <script src="bower_components/he/he.js"></script>
+    <script type="text/javascript" src="client.js"></script>
+
+    <script type="text/template" id="single-book-template">
+        <div class="col-xs-4">
+            <h3 class="title"><%= title %></h3>
+            <img class="image_url" src="<%= image_url %>">
+            <p>Averege rating: <span class="average_rating"><%= average_rating %></span></p>
+            <p>ISBN: <span class="isbn"><%= isbn %></span></p>
+            <button class="btn btn-info read-description">Read description</button>
+            <button class="btn btn-success add-to-cart">Add to Cart</button>
+        </div>
+    </script>
+
+    <script type="text/template" id="cart-single-book">
+        <div class="col-xs-4" data-isbn="<%= isbn %>">
+            <h3><%= title %></h3>
+            <img src="<%= image_url %>">
+            <p>Averege rating: <%= average_rating %></p>
+            <p>ISBN: <span class="isbn"><%= isbn %></span></p>
+            <p> Times ordered: <span class="times-ordered"><%= times_ordered %></span></p>
+            <button class="btn btn-warning remove-from-cart">Remove from cart</button>
+        </div>
+    </script>
+
+    <script type="text/template" id="book-description-template">
+    <div id="modal-description" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">        
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel"><%= title %></h4>
+                    </div>
+                    <div class="modal-body">-->
+                        <%= description %>
+                    <!--</div>-->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </script>
+    
+</body>
+</html>
