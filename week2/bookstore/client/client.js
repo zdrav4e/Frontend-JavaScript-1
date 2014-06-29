@@ -58,6 +58,7 @@ var Cart = (function () {
       }*/
       var output = _.template(bookTemplate, bookObj);
       var newrow = $("#books");
+
       if (count % 3 === 0) {
         newrow.append($("<div class='row'></div>"));
       }
@@ -73,7 +74,6 @@ var Cart = (function () {
 
     var times_ordered = Cart.add(bookObj);
 
-    $("#num_pages").html(Cart.getNumPages());
     output = _.template(cartBookTemplate, bookObj);
 
     if (times_ordered === 1) {
@@ -83,6 +83,7 @@ var Cart = (function () {
       $("#books-in-cart [data-isbn='" + bookObj.isbn + "'] .times-ordered").html(times_ordered);
     }
 
+    $("#num_pages").html(Cart.getNumPages());
   });
 
   $("#books-in-cart").on("click", ".remove-from-cart", function () {
@@ -98,8 +99,7 @@ var Cart = (function () {
     var bookObj = getBookByISBN($(this).parent().find(".isbn").text(), bookData);
     var output = _.template(bookDescriptionTemplate, bookObj);
 
-    var modal = $(output);
-    modal.modal();
+    $(output).modal();
 
   });
 

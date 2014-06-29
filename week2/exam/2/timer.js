@@ -2,67 +2,69 @@
 
 $(document).ready(function () {
 
-//Get seconds and minutes from miliseconds
-function getSecondsMinutes(time, elapsed, direction) {
-  var seconds, minutes;
-  if (direction === "down") {
-    seconds = (time - elapsed) / 1000;
-  } else {
-    seconds = elapsed / 1000;
-  }
-  minutes = parseInt(seconds / 60, 10);
-  seconds = parseInt(seconds % 60, 10);
-
-  return {"seconds" : seconds, "minutes" : minutes};
-}
-
-function Timer(time, direction) {
-  //var start = new Date().getTime();
-  var that = this;
+var Timer = (function () {
   var elapsed = 0;
+  var timerID = 0;
+  var time = 0;
+  var direction;
 
-  this.timerID = setInterval(function () {
-    //Pretend there is no delay - elapsed = new Date().getTime() - start
-    elapsed += 1000;
+  return {
+    start: function (_time, _direction) {
+      if (timerID === 0) {
+        time = _time;
+        direction = _direction;
+        elapsed = 0;
 
-    var seconds_minutes = getSecondsMinutes(time, elapsed, direction);
-    updateUI(seconds_minutes);
+        updateUI(getSecondsMinutes(time, elapsed, direction));
 
-    if (elapsed >= time) {
-      clearInterval(that.timerID);
+        timerID = setInterval(function () {
+          elapsed += 1000;
+
+          updateUI(getSecondsMinutes(time, elapsed, direction));
+
+          if (elapsed >= time) {
+            //find out how to use reset here
+            clearInterval(timerID);
+            updateButtonUI(false);
+            timerID = 0;
+          }
+        }, 1000);
+      }
+    },
+    reset: function () {
+      updateUI({"seconds" : 0, "minutes" : 0});
+      clearInterval(timerID);
+      updateButtonUI(false);
+      timerID = 0;
     }
-
-  }, 1000);
-
-  //Public interface
-  this.reset = function() {
-    updateUI({"seconds" : 0, "minutes" : 0});
-    clearInterval(this.timerID);
   };
-}
+}());
 
-  var timer;
+    //Get seconds and minutes from miliseconds
+function getSecondsMinutes(time, elapsed, direction) {
+    var seconds, minutes;
+    if (direction === "down") {
+      seconds = (time - elapsed) / 1000;
+    } else {
+      seconds = elapsed / 1000;
+    }
+    minutes = parseInt(seconds / 60, 10);
+    seconds = parseInt(seconds % 60, 10);
 
-  $("#start-up").click(function () {
+    return {"seconds" : seconds, "minutes" : minutes};
+  }
+
+  function start(dir) {
     var minutes = $("#minutes").val(),
-        seconds = $("#seconds").val(),
-        time_ms = 1000 * (minutes * 60 + seconds);
+      seconds = $("#seconds").val(),
+      time_ms = 0;
 
-    timer = new Timer(time_ms, "up");
-  });
+    minutes = (minutes === "") ? 0 : parseInt(minutes);
+    seconds = (seconds === "") ? 0 : parseInt(seconds);
+    time_ms = 1000 * (minutes * 60 + seconds);
 
-  $("#start-down").click(function () {
-    var minutes = $("#minutes").val(),
-        seconds = $("#seconds").val(),
-        time_ms = 1000 * (minutes * 60 + seconds);
-
-    updateUI({"seconds" : seconds, "minutes" : minutes});
-    timer = new Timer(time_ms, "down");
-  });
-
-  $("button#stop-reset").click(function () {
-    timer.reset();
-  });
+    Timer.start(time_ms, dir);
+  }
 
   function updateUI(seconds_minutes) {
     var minute_first_digit = parseInt(seconds_minutes.minutes / 10, 10),
@@ -76,4 +78,23 @@ function Timer(time, direction) {
     $("#second-second-digit").html(second_second_digit);
   }
 
-} (jQuery) );
+  function updateButtonUI(disabled) {
+    $("#start-down").prop("disabled", disabled);
+    $("#start-up").prop("disabled", disabled);
+  }
+
+  $("#start-up").click(function () {
+    start("up");
+    updateButtonUI(true);
+  });
+
+  $("#start-down").click(function () {
+    start("down");
+    updateButtonUI(true);
+  });
+
+  $("button#stop-reset").click(function () {
+    Timer.reset();
+  });
+
+});
