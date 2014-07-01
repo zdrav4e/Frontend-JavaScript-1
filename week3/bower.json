@@ -1,0 +1,22 @@
+{
+  "name": "group-people-teams",
+  "version": "0.0.0",
+  "authors": [
+    "Zdrav4e"
+  ],
+  "description": "A simple application to group students in teams",
+  "main": "index.html",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.1.1",
+    "lodash": "2.4.1"
+  }
+}
