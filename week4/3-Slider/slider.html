@@ -11,26 +11,31 @@
       <div class="row">
         <div class="col-xs-12">
           Enter image to search google:
-          <input type="text" class="input input-lg" />
-          <button class="btn">Load images!</button>
+          <input id="load-images-input" type="text" class="input input-lg"/>
+          <button class="btn" id="load-images">Load images!</button>
         </div>
       </div>
       <div class="row gallery">
         <div class="col-xs-2">
-          <button class="btn btn-success">To the Left</button>
+          <a href='#' class="btn btn-success" id="left">To the Left</a>
         </div>
 
-        <div class="col-xs-8">
+        <div class="col-xs-8" id="content">
           <img id="current-image" width="100%" height="100%" src="http://media.npr.org/assets/img/2012/01/04/ap99121501386_custom-feedbb6efa738efee47e7828e805758dc427fa60-s6-c30.jpg" alt="">
         </div>
 
         <div class="col-xs-2">
-          <button class="btn btn-success">To the Left</button>
+          <a href="#" class="btn btn-success" id="right">To the Right</a>
         </div>
       </div>
     </div>
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("search", "1");
+
+    </script>
     <script src="app.js"></script>
   </body>
 </html>
