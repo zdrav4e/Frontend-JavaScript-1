@@ -1,0 +1,58 @@
+//browser
+
+GET / HTTP/1.1
+Host: localhost:8080
+Connection: keep-alive
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.153 Safari/537.36
+Accept-Encoding: gzip,deflate,sdch
+Accept-Language: en-US,en;q=0.8,bg;q=0.6
+
+
+
+//curl
+
+GET / HTTP/1.1
+User-Agent: curl/7.22.0 (x86_64-pc-linux-gnu) libcurl/7.22.0 OpenSSL/1.0.1 zlib/1.2.3.4 libidn/1.23 librtmp/2.3
+Host: localhost:8081
+Accept: */*
+
+
+
+//ajax
+
+GET / HTTP/1.1
+Host: localhost:8082
+Connection: keep-alive
+Accept: */*
+Origin: http://localhost
+User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.153 Safari/537.36
+Referer: http://localhost/tables.html
+Accept-Encoding: gzip,deflate,sdch
+Accept-Language: en-US,en;q=0.8,bg;q=0.6
+
+HTTP client: browser, wget, AJAX engine
+1. Request
+2. Response
+3. End!
+
+
+curl -X POST -d "name=zdravche" http://localhost:8082
+
+POST / HTTP/1.1
+User-Agent: curl/7.22.0 (x86_64-pc-linux-gnu) libcurl/7.22.0 OpenSSL/1.0.1 zlib/1.2.3.4 libidn/1.23 librtmp/2.3
+Host: localhost:8082
+Accept: */*
+Content-Length: 13
+Content-Type: application/x-www-form-urlencoded
+
+name=zdravche
+
+
+
+RESTful API
+1. GET     -> Read
+2. POST    -> Create
+3. PUT	   -> Update	
+4. DELETE  -> Delete
+

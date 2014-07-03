@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Students CRUD</title>
+   	<link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+   	<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+	<nav class="navbar navbar-default" role="navigation">
+	<ul class="nav navbar-nav">
+		<li><a href="list-all.html">List All Students</a></li>
+		<li><a href="#">Get Student</a></li>
+		<li><a href="#">Update Student</a></li>		
+		<li><a href="#">Delete Student</a></li>
+	</ul>
+	</nav>
+
+	<div id="all-students"></div>
+
+	<script type="text/x-handlebars-template" id="list-all-students">
+		{{#each students}}
+		<span class="single-student">
+			<span>{{name}}</span>
+			<span>{{fn}}</span>
+			<span>{{courses}}</span>
+			<button id="delete" data-fn={{fn}}></button>
+		</span>
+		{{/each}}
+	</script>
+
+	<script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/lodash/dist/lodash.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="bower_components/handlebars/handlebars.js"></script>
+    <script src="app.js"></script>
+    <script src="list.js"></script>
+</body>
+
+</html>
