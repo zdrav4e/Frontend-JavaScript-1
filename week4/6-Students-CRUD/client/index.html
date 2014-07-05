@@ -7,16 +7,31 @@
 </head>
 
 <body>
+<h2>Hackbulgaria Students CRUD</h2>
 
-	<nav>
-	<ul>
-		<li><a href="list-all.html">List All Students</a></li>
-		<li>Get Student</li>
-		<li>Update Student</li>
-		<li>Delete Student</li>
-	</ul>
-	</nav>
+	<div id="all-students">
+		<div class="add-single-student">
+			<input type="text" name="fn" placeholder="Faculty number">
+			<input type="text" name="name" placeholder="Student name">
+			<input type="text" size="50" name="courses" placeholder="Comma-separated names of courses, e.g. Algebra, Calculus">
+			<button type="button" class="btn btn-default insert" id="add-student" title="insert new student">Insert new student</button>
+		</div>
+	</div>
 
+	<script type="text/x-handlebars-template" id="list-all-students">
+		{{#each students}}
+		<div class="single-student">
+			<span class="fn">{{fn}}</span>
+			<input type="text" name="name" value="{{name}}" disabled="disabled">
+			<input type="text" size="50" name="courses" value="{{courses}}" disabled="disabled">
+
+			<button type="button" class="btn btn-default update" data-toggle="popover" title="Successfully updated!" data-content="Successfully updated!">Update</button>
+			<button data-fn={{fn}} type="button" class="btn btn-default delete">Delete</button>
+			
+		</div>
+		{{/each}}
+	</script>
+	
 	<script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/lodash/dist/lodash.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>

@@ -1,0 +1,10 @@
+.fn {
+	width: 200px;
+}
+
+.save, .insert {
+	background-color: #65DF62;
+}
+.insert:hover, .save:hover {
+	background-color: #49B925;	
+};
