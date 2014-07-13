@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Hack Bulgaria Snake</title>
+		<style>
+			canvas {
+				background-image: url("grass2.jpg");
+				border: 2px solid #000000;
+			}
+			#settings {
+				border: 2px solid #000000;
+				font-size: 18px;
+				height: 200px;
+				width: 400px;
+				padding: 5px;
+			}
+
+			input, label {
+				margin: 10px;
+			}
+
+		</style>
+
+	</head>
+	<body>
+		<canvas id="snakeCanvas" width="600" height="400"></canvas>
+
+		<div id="settings">
+
+			<label for="speed">Game speed:</label><input type="range" min="1" max="199" id="speed" default="1"><br>
+			<label for="snake-color">Snake color:</label><input type="color" id="snake-color" value="#0A5A28"><br>
+			<input type="checkbox" value="pause" name="pause" id="pause" checked="checked"><label for="pause">Pause (Use button p to pause)</label><br>
+			<input type="checkbox" value="reverse" name="reverse" id="reverse" checked="checked"><label for="reverse">Reverse snake (Use button R to reverse)</label><br>
+
+		</div>
+		<img id="apple" src="apple2.png" style="display:none;" width="10" height="10">
+
+		<script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
+		<script type="text/javascript" src="bower_components/lodash/dist/lodash.js"></script>
+		<script type="text/javascript" src="snake.js"></script>
+	</body>
+</html>
