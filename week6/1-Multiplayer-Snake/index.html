@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Hack Bulgaria Snake</title>
+		<style>
+			canvas {
+				background-image: url("grass2.jpg");
+				border: 2px solid #000000;
+				display: none;
+			}
+			#settings {
+				border: 2px solid #000000;
+				font-size: 18px;
+				height: 150px;
+				width: 400px;
+				padding: 5px;
+			}
+
+			input, label {
+				margin: 10px;
+			}
+
+		</style>
+
+	</head>
+	<body>
+	<canvas id="snakeCanvas" width="600" height="400"></canvas>
+	<img id="apple" src="apple2.png" style="display:none;" width="10" height="10">
+
+	<script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="bower_components/lodash/dist/lodash.js"></script>
+	<script src="bower_components/socket.io-client/socket.io.js"></script>
+	<script type="text/javascript" src="snake.js"></script>
+
+<input type="text" id="playerName" value="RadoRado">
+<button id="createGame">Create Game</button>
+
+<br>
+<input type="text" id="joinGameId">
+<button id="joinGame">Join Game</button>
+
+
+
+<script>
+    $(function() {
+        console.log("I AM READY");
+        window.socket = new io("http://192.168.1.162:3000");
+        var socketId = null;
+		var gameId = null;
+
+        socket.on("connect", function(data) {
+            socketId = socket.io.engine.id;
+            runAfterSocketHasConnected();
+        });
+
+        socket.on("start", function(data) {
+            console.log("game has started");
+            gamestart();
+        });
+
+        socket.on("render", function(data) {
+            console.log("Should render now");
+            console.log(data);
+
+
+        });
+
+        function runAfterSocketHasConnected() {
+            $("#createGame").on("click", function() {
+                $.ajax({
+                    url: "http://localhost:3000/createGame",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        playerName: $("#playerName").val(),
+                        socketId: socketId
+                    })
+                }).done(function(result) {
+                    gameId = result.gameId;
+                    console.log("Game is created with id: ", gameId);
+                });
+            });
+
+            $("#joinGame").on("click", function() {
+                gameId = $("#joinGameId").val();
+                $.ajax({
+                    url: "http://localhost:3000/joinGame",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        playerName: $("#playerName").val(),
+                        socketId: socketId,
+                        gameId: gameId
+                    })
+                }).done(function(result) {
+                    //gamestart();
+                });
+            });
+        }
+    });
+</script>
+
+	</body>
+</html>
