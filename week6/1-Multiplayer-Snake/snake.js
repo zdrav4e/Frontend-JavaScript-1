@@ -2,10 +2,8 @@ $(document).ready(function(){
   "use strict";
 
 var canvas = document.getElementById("snakeCanvas"),
-      context = canvas.getContext("2d"),
       canvasWidth = canvas.width,
       canvasHeight = canvas.height,
-      tileWidth = 10,
       keyCodeToDirectionTable = {
         37: "left",
         38: "up",
@@ -15,6 +13,9 @@ var canvas = document.getElementById("snakeCanvas"),
       directionsArray = ["left", "up", "right", "down"],
       reverse = {"up" : "down", "down" : "up", "left" : "right", "right" : "left"},
       gameid;
+
+  window.tileWidth = 10;
+  window.context = canvas.getContext("2d");
 
   function Tile(x, y, size, ctx) {
     this.x = x;
@@ -29,15 +30,23 @@ var canvas = document.getElementById("snakeCanvas"),
     };
   }
 
-  var hostsnake = (function(ctx) {
+  window.Tile = Tile;
+
+  function Snake(name, x, y, ctx) {
 
     var dir = "down", prevDir = "down";
 
+    var name = name;
+
     var tiles = [
-      new Tile(100, 30, tileWidth, ctx),
-      new Tile(100, 20, tileWidth, ctx),
-      new Tile(100, 10, tileWidth, ctx)
+      new Tile(x, y, tileWidth, ctx),
+      new Tile(x, y - 10, tileWidth, ctx),
+      new Tile(x, y - 20, tileWidth, ctx)
     ];
+
+    var getName = function () {
+      return name;
+    }
 
     var changeDir = function(d) {
       //Reverse not allowed with arrow keys
@@ -99,23 +108,23 @@ var canvas = document.getElementById("snakeCanvas"),
       switch (dir) {
         case "up":
           newTile = new Tile(firstTile.x, firstTile.y - tileWidth , tileWidth, ctx);
-          tiles.unshift(newTile);
-          tiles.pop();
+          //tiles.unshift(newTile);
+          //tiles.pop();
           break;
         case "down":
           newTile = new Tile(firstTile.x, firstTile.y + tileWidth , tileWidth, ctx);
-          tiles.unshift(newTile);
-          tiles.pop();
+          //tiles.unshift(newTile);
+          //tiles.pop();
           break;
         case "left":
             newTile = new Tile(firstTile.x - tileWidth, firstTile.y, tileWidth, ctx);
-            tiles.unshift(newTile);
-            tiles.pop();
+            //tiles.unshift(newTile);
+            //tiles.pop();
           break;
         case "right":
             newTile = new Tile(firstTile.x + tileWidth, firstTile.y, tileWidth, ctx);
-            tiles.unshift(newTile);
-            tiles.pop();
+            //tiles.unshift(newTile);
+            //tiles.pop();
           break;
       }
 
@@ -131,7 +140,7 @@ var canvas = document.getElementById("snakeCanvas"),
       if (hitself()) {
         gameover(ctx);
       }
-
+      socket.emit("move", { gameId: gameId, newTile : { x: newTile.x, y: newTile.y, size: newTile.size }, playerName : name });
     };
 
     var print = function() {
@@ -144,13 +153,19 @@ var canvas = document.getElementById("snakeCanvas"),
       move: move,
       print: print,
       changeDir: changeDir,
-      getDir : getDir
+      getDir : getDir,
+      tiles: tiles,
     };
 
-  } (context));
+  };
 
+window.Snake = Snake;
 
-  var hostfood = (function(ctx) {
+  function Food(name, ctx) {
+    var name = name;
+    var getName = function(){
+      return name;
+    }
 
     var tile = new Tile(10, 80, tileWidth, ctx);
 
@@ -171,7 +186,9 @@ var canvas = document.getElementById("snakeCanvas"),
       tile: tile
     };
 
-  } (context));
+  };
+
+window.Food = Food;
 
 window.gamestart = function(speed) {
   $("#snakeCanvas").show();
@@ -182,7 +199,10 @@ window.gamestart = function(speed) {
 
     //hostsnake.move();
     hostsnake.print();
+    guestsnake.print();
+
     hostfood.print();
+    guestfood.print();
 
     //guestsnake.move();
     //guestsnake.print();
@@ -193,7 +213,7 @@ window.gamestart = function(speed) {
 
   // /gamestart(1000);
 
-function gameover(context) {
+window.gameover = function (context) {
   clearInterval(gameid);
   context.font = '50px Arial';
   context.fillStyle = 'red';
@@ -202,22 +222,22 @@ function gameover(context) {
 }
 
   $("body").keydown(function(e) {
+    if (typeof hostsnake !== "undefined") {
 
-    var dir = keyCodeToDirectionTable[e.which];
-    if (typeof dir !== 'undefined') {
-      hostsnake.changeDir(dir);
+      var dir = keyCodeToDirectionTable[e.which];
+      if (typeof dir !== 'undefined') {
+        hostsnake.changeDir(dir);
+        console.log('here');
+      }
+      if ($("input#pause").prop("checked") && e.which === 80) {
+        hostsnake.changeDir("stop");
+      }
+      if ($("input#reverse").prop("checked") && e.which === 82) {
+        hostsnake.changeDir("reverse");
+      }
+
+      hostsnake.move();
     }
-    if ($("input#pause").prop("checked") && e.which === 80) {
-      hostsnake.changeDir("stop");
-    }
-    if ($("input#reverse").prop("checked") && e.which === 82) {
-      hostsnake.changeDir("reverse");
-    }
-
-    hostsnake.move();
-
-    socket.emit("move", { hostsnake : hostsnake, hostfood : hostfood });
-
   });
 
 })
