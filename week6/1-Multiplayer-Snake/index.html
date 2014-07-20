@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Hack Bulgaria Snake</title>
+		<style>
+			canvas {
+				background-image: url("grass2.jpg");
+				border: 2px solid #000000;
+				display: none;
+			}
+			#settings {
+				border: 2px solid #000000;
+				font-size: 18px;
+				height: 150px;
+				width: 400px;
+				padding: 5px;
+			}
+
+			input, label {
+				margin: 10px;
+			}
+
+		</style>
+
+	</head>
+	<body>
+	<canvas id="snakeCanvas" width="600" height="400"></canvas>
+	<img id="apple" src="apple2.png" style="display:none;" width="10" height="10">
+
+	<script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="bower_components/lodash/dist/lodash.js"></script>
+	<script src="bower_components/socket.io-client/socket.io.js"></script>
+    <script type="text/javascript" src="socket.js"></script>
+	<script type="text/javascript" src="snake.js"></script>
+
+
+<input type="text" id="playerName" value="RadoRado">
+<button id="createGame">Create Game</button>
+
+<br>
+<input type="text" id="joinGameId">
+<button id="joinGame">Join Game</button>
+
+
+	</body>
+</html>
