@@ -50,8 +50,11 @@ var canvas = document.getElementById("snakeCanvas"),
         dir = prevDir;
         return;
       }
-      if (dir === "reverse") {
-        dir = reverse[prevDir];
+      if (d === "reverse") {
+        var temp = dir;
+        dir = reverse[dir];
+        prevDir = temp;
+
         tiles.reverse();
         return;
       }
@@ -141,11 +144,16 @@ var canvas = document.getElementById("snakeCanvas"),
       });
     };
 
+    var countTiles = function () {
+      return tiles.length;
+    }
+
     return {
       move: move,
       print: print,
       changeDir: changeDir,
-      getDir : getDir
+      getDir : getDir,
+      countTiles : countTiles
     };
 
   } (context));
@@ -190,31 +198,39 @@ function gamestart(speed) {
   gamestart(1000);
 
 function gameover(context) {
+  var players = [];
   clearInterval(gameid);
   context.font = '50px Arial';
   context.fillStyle = 'red';
 
   context.fillText("Game Over :(", canvasWidth/2 - 150, canvasHeight/2 + 15);
+  var name = prompt("Enter your name");
+  if (name !== null) {
+    localStorage['player_' + name] = snake.countTiles();
+  }
 }
 
   $("body").keydown(function(e) {
-
     var dir = keyCodeToDirectionTable[e.which];
     if (typeof dir !== 'undefined') {
       snake.changeDir(dir);
+      e.preventDefault();
     }
     if ($("input#pause").prop("checked") && e.which === 80) {
       snake.changeDir("stop");
+      e.preventDefault();
     }
     if ($("input#reverse").prop("checked") && e.which === 82) {
       snake.changeDir("reverse");
+      e.preventDefault();
     }
     if (e.which === 65) {
-      $("input#speed").val( $("input#speed").val() - 10 );
+      $("input#speed").val( parseInt($("input#speed").val()) - 10 );
       $("input#speed").trigger("change");
     }
     if (e.which === 83) {
-      $("input#speed").val( $("input#speed").val() + 10 );
+      $("input#speed").val( parseInt($("input#speed").val()) + 10 );
+      console.log(parseInt($("input#speed").val()) + 10);
       $("input#speed").trigger("change");
     }
   });
@@ -225,5 +241,41 @@ function gameover(context) {
     gamestart(speed);
   });
 
+  $("button#top-ten").click(function() {
+    var source = $("#top-ten-template").html(),
+        template = Handlebars.compile(source),
+        players = getTopTen(),
+        html;
+
+    if (players.length > 0) {
+      html = template({ players : players });
+      $("#top-ten-list").append(html);
+    }
+
+  });
+
+function getTopTen() {
+  var players = [], i, key;
+  for (i = 0; i < localStorage.length; i++) {
+    key = localStorage.key(i);
+    if (key.indexOf("player_") === 0) {
+        players.push({ name : key.slice(7), score : localStorage.getItem(key) });
+    }
+  }
+  players.sort(function(a, b) {
+    return b.score - a.score;
+  });
+
+  if (players.length > 10) {
+    players = players.slice(0, 10);
+    for (i = 0; i < localStorage.length; i++) {
+      key = localStorage.key(i);
+      if (key.indexOf("player_") === 0 && _.findIndex(players, { 'name': key.slice(7) }) === -1) {
+        localStorage.removeItem(key);
+      }
+    }
+  }
+  return players;
+}
 
 })
