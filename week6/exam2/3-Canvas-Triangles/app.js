@@ -95,14 +95,17 @@ var game = (function(ctx) {
   });
 
   $("button#save-state").click(function() {
-    var name = prompt("Please enter a name for saved state"),
-        state = canvas.toDataURL(),
-        triangles = JSON.parse(localStorage.getItem("triangles"));
+    var name = prompt("Please enter a name for saved state");
 
-    triangles = triangles || {};
-    triangles[name] = state;
+    if (name !== null) {
+      var state = canvas.toDataURL(),
+          triangles = JSON.parse(localStorage.getItem("triangles"));
 
-    localStorage.setItem("triangles", JSON.stringify(triangles));
+      triangles = triangles || {};
+      triangles[name] = state;
+
+      localStorage.setItem("triangles", JSON.stringify(triangles));
+    }
   });
 
   (function init() {
