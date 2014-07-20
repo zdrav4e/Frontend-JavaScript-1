@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Hack Bulgaria Change names</title>
+</head>
+<body>
+	<div id="names"></div>
+
+	<script type="text/x-handlebars-template" id="name-button">
+	<div>
+		<input type="textfield" data-nameid="{{nameId}}" id="{{nameId}}" value="{{name}}" class="name-input">
+		<button type="button" data-nameid=="{{nameId}}" disabled="disabled" class="name-update">Update name</button>
+	</div>
+	</script>
+
+	<script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="bower_components/handlebars/handlebars.js"></script>
+	<script type="text/javascript" src="app.js"></script>
+</body>
+</html>

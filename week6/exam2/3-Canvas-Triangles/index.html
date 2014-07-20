@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Hack Bulgaria Triangles</title>
+		<style type="text/css">
+			canvas#triangles {
+				border: 1px solid black;
+			}
+			#settings {
+				width: 400;
+				height: 400;
+			}
+		</style>
+	</head>
+	<body>
+		
+		<canvas id="triangles" width="600" height="400"></canvas>
+		<div id="settings">
+			<input type="color" value="#EB1F6C" id="color">
+			<button type="button" id="clear-canvas">Clear Canvas</button>
+			<button type="button" id="save-state">Save state</button>
+		</div>
+		<script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
+		<script type="text/javascript" src="bower_components/handlebars/handlebars.js"></script>
+		<script type="text/javascript" src="bower_components/lodash/dist/lodash.js"></script>
+		<script type="text/javascript" src="app.js"></script>
+
+		<script type="text/x-handlebars-template" id="saved-states-select">
+			<select id="saved-states">
+			{{#each states}}
+				<option value="{{name}}">{{name}}</option>
+			{{/each}}
+			</select>
+			<button type="button" id="load-state">Load state</button>		
+		</script>
+
+	</body>
+</html>
