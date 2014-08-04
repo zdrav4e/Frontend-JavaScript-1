@@ -1,0 +1,22 @@
+canvas {
+	background-image: url("grass2.jpg");
+	border: 2px solid #000000;
+	float: left;
+	margin-right:50px;
+}
+#settings {
+	border: 2px solid #000000;
+	font-size: 18px;
+	height: 200px;
+	width: 400px;
+}
+
+input, label {
+	margin: 10px;
+}
+#settings div, #settings span {
+	margin: 10px;
+}
+#top-ten, #top-ten-list {
+	margin: 10px;
+}

@@ -4,12 +4,12 @@ var data = require("./data"),
 
 function groupCorrupted (data) {
   var grouped = _.groupBy(data, function(visit) {
-    if (typeof visit === "object" && typeof visit.fields === "object") {
+    //if (typeof visit === "object" && typeof visit.fields === "object") {
       var fields = visit.fields;
       var date = fields.date;
       var student = fields.student;
       return date + ' + ' + student;
-    }
+    //}
   });
   return grouped;
 }

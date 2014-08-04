@@ -14,6 +14,9 @@ var canvas = document.getElementById("snakeCanvas"),
       reverse = {"up" : "down", "down" : "up", "left" : "right", "right" : "left"},
       gameid;
 
+      serverUrl = "http://localhost:3000",
+      isHost = false;
+
   window.tileWidth = 10;
   window.context = canvas.getContext("2d");
 
@@ -32,7 +35,7 @@ var canvas = document.getElementById("snakeCanvas"),
 
   window.Tile = Tile;
 
-  function Snake(name, x, y, ctx) {
+  function Snake(name, x, y, color, ctx) {
 
     var dir = "down", prevDir = "down";
 
@@ -108,23 +111,23 @@ var canvas = document.getElementById("snakeCanvas"),
       switch (dir) {
         case "up":
           newTile = new Tile(firstTile.x, firstTile.y - tileWidth , tileWidth, ctx);
-          //tiles.unshift(newTile);
-          //tiles.pop();
+          tiles.unshift(newTile);
+          tiles.pop();
           break;
         case "down":
           newTile = new Tile(firstTile.x, firstTile.y + tileWidth , tileWidth, ctx);
-          //tiles.unshift(newTile);
-          //tiles.pop();
+          tiles.unshift(newTile);
+          tiles.pop();
           break;
         case "left":
             newTile = new Tile(firstTile.x - tileWidth, firstTile.y, tileWidth, ctx);
-            //tiles.unshift(newTile);
-            //tiles.pop();
+            tiles.unshift(newTile);
+            tiles.pop();
           break;
         case "right":
             newTile = new Tile(firstTile.x + tileWidth, firstTile.y, tileWidth, ctx);
-            //tiles.unshift(newTile);
-            //tiles.pop();
+            tiles.unshift(newTile);
+            tiles.pop();
           break;
       }
 
@@ -161,13 +164,13 @@ var canvas = document.getElementById("snakeCanvas"),
 
 window.Snake = Snake;
 
-  function Food(name, ctx) {
+  function Food(name, x, y, ctx) {
     var name = name;
     var getName = function(){
       return name;
     }
 
-    var tile = new Tile(10, 80, tileWidth, ctx);
+    var tile = new Tile(x, y, tileWidth, ctx);
 
     var print = function() {
       //tile.print();
@@ -227,11 +230,8 @@ window.gameover = function (context) {
       var dir = keyCodeToDirectionTable[e.which];
       if (typeof dir !== 'undefined') {
         hostsnake.changeDir(dir);
-        console.log('here');
       }
-      if ($("input#pause").prop("checked") && e.which === 80) {
-        hostsnake.changeDir("stop");
-      }
+
       if ($("input#reverse").prop("checked") && e.which === 82) {
         hostsnake.changeDir("reverse");
       }

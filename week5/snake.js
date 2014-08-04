@@ -165,7 +165,7 @@ var canvas = document.getElementById("snakeCanvas"),
 
     var print = function() {
       //tile.print();
-      var img=document.getElementById("apple");
+      var img = document.getElementById("apple");
       ctx.drawImage(img, tile.x - 5, tile.y - 5);
     };
 
@@ -195,7 +195,7 @@ function gamestart(speed) {
   }, speed);
 }
 
-  gamestart(1000);
+  gamestart(100);
 
 function gameover(context) {
   var players = [];
@@ -249,7 +249,7 @@ function gameover(context) {
 
     if (players.length > 0) {
       html = template({ players : players });
-      $("#top-ten-list").append(html);
+      $("#top-ten-list").html(html);
     }
 
   });

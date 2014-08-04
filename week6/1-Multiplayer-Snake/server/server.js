@@ -46,7 +46,7 @@ function socketDisconected(socketId) {
     hostId = _.pluck(players.filter(isHost), "socketId");
     console.log("The host is %s", hostId);
 
-    if(_.contains(_.pluck(players, "socketId"), socketId)) {players
+    if(_.contains(_.pluck(players, "socketId"), socketId)) {
       console.log("Players found in game %s", gid);
       gameId = gid;
       if(socketId === players[0].socketId) {

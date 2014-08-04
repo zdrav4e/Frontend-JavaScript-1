@@ -1,6 +1,6 @@
 $(function() {
     console.log("I AM READY");
-    window.socket = new io("http://192.168.1.162:3000");
+    window.socket = new io("http://localhost:3000");
     var socketId = null;
     window.gameId = null;
 
@@ -11,10 +11,11 @@ socket.on("connect", function(data) {
 
 socket.on("start", function(data) {
     console.log(data);
-    window.hostsnake = new Snake(data.player1, context);
-    window.guestsnake = new Snake(data.player2, context);
-    window.hostfood = new Food(data.player1, context);
-    window.guestfood = new Food(data.player2, context);
+    window.hostsnake = new Snake(data.player1, 100, 10, "red", context);
+    window.guestsnake = new Snake(data.player2, 100, 60, "blue", context);
+
+    window.hostfood = new Food(data.player1, 10, 80, context);
+    window.guestfood = new Food(data.player2, 50, 50, context);
 
     gamestart();
 });

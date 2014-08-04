@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Hack Bulgaria - The Matrix</title>
+		<style type="text/css">
+			#second-matrix, #scalar {
+				display: none;
+			}
+		</style>
+	</head>
+	<body>
+		<div>
+			<label for="count-rows">Count Rows</label><input class="count-rows" name="count-rows" type="number">
+			<label for="count-cols">Count Cols</label><input class="count-cols" name="count-cols" type="number">
+			<button type="button" class="input-matrix">Input matrix</button>
+
+			<div class="matrix"></div>
+			<button type="button" class="create-matrix">Create matrix</button>
+		</div>
+
+		<div id="second-matrix">
+			<input class="count-rows" type="number">
+			<input class="count-cols" type="number">
+			<button type="button" class="input-matrix">Input matrix</button>
+
+			<div class="matrix"></div>
+			<button type="button" class="create-matrix">Create matrix</button>
+		</div>
+		
+		<input type="number" id="scalar">
+		
+		
+
+		<div id="operations">
+			<button type="button" id="transpose-m">Transpose</button>
+			<button type="button" id="sum-m" class="not-created">Sum</button>
+			<button type="button" id="scalar-mult-m" class="not-created">Scalar multiply</button>
+			<button type="button" id="mult-m" class="not-created">Multiply</button>
+		</div>
+
+		<div id="transposed"></div>
+		<div i>
+
+		<script data-main="app" type="text/javascript" src="bower_components/requirejs/require.js"></script>
+	</body>
+</html>
