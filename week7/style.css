@@ -1,0 +1,36 @@
+#second-matrix, #scalar, #operations, #first-matrix, .hidden2 {
+	display: none;
+}
+.m1 {
+	float: left;
+	margin-right: 10px;
+}
+.m-wrapper {
+	margin: 10px;
+}
+.op {
+	margin: 10px;
+}
+label {
+	margin-right: 10px;
+	margin-left: 10px;
+}
+body {
+	padding: 30px;
+}
+#first-matrix, #second-matrix {
+	margin: 20px;
+}
+.op {
+	margin: 20px;
+}
+.m-wrapper {
+	font-size: 18px
+}
+button {
+	font-size: 18px;
+	margin-top: 5px;
+}
+body {
+	font-size: 16px;
+}

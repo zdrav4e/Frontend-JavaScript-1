@@ -6,40 +6,180 @@ require.config({
   }
 });
 
-require(["jquery", "matrix", "matrixoperation", "calculator_ui"], function($, Matrix, MatrixOperations, CalculatorUi) {
-  var mo = new MatrixOperations();
+require(["jquery", "matrix", "matrixoperation"], function($, Matrix, MatrixOperations) {
+  var operations = new MatrixOperations(),
+      matrix, matrices = [], N, M;
 
-  var m = mo.createFromArray([[1, 2, 3], [4, 5, 6]]);
+  function printMatrixTable(N, M) {
+    var html, i, j;
 
-      //console.log(m.getN());
-      //console.log(m.getM());
-      //console.log(m.getRow(0));
-      /*console.log(m.getCol(0));
+    html = '<table>';
+      for (i = 0; i <= N - 1; i++) {
+        html += '<tr>';
+        for (j = 0; j <= M - 1; j++) {
+          html += "<td><input type='number' data-row='" + i + "' data-col='" + j + "' class='matrix'></td>";
+        }
+        html += '</tr>';
+      }
+    html += '</table>';
+    return html;
+  }
 
-      console.log(m.getAt(0, 1));
-      m.setAt(1, 1, -5);
-      console.log(m.getData());
-      m.setRow(0, [-1, -2, -3]);
-      console.log(m.toString());
-      m.setCol(0, [1, -4]);*/
-      console.log(m.toString());
+  $('body').on('blur', '.count-rows, .count-cols', function() {
+    var rows, cols, i, j, html;
 
-      var mt = mo.transpose(m);
-      console.log(mt.toString());
+    if ($(this).hasClass('count-cols')) {
+      M = $(this).val();
+    }
+    else {
+      M = $(this).siblings('.count-cols').val();
+    }
+    if ($(this).hasClass('.count-rows')) {
+      N = $(this).val();
+    }
+    else {
+      N = $(this).siblings('.count-rows').val();
+    }
+    if (N && M) {
+      html = '<div>Matrix</div>' + printMatrixTable(N, M);
 
-      //var m2 = mo.createFromArray([[4, 5, 6], [1, 2, 3]]);
+      $(this).parent().find('div.matrix').html(html);
+      $("#first-matrix").show();
+      matrix = new Matrix(N, M);
+    }
+  });
 
-      //var sum = mo.add(m, m2);
+  $('body').on('click', '.create-matrix', function() {
 
-      //console.log(sum.toString());
+    $(this).parent().find("input.matrix").each(function() {
+      var val = parseInt($(this).val());
+      if (typeof val === 'number') {
+        matrix.setAt($(this).data('row'), $(this).data('col'), val);
+      }
+    });
 
-      //var sm = mo.scalarMult(-1, m2);
-      //console.log(sm.toString());
-      //console.log(mt.getCol(0));
+    //if ($(this).hasClass('create-second-matrix')) {
+    if (typeof matrices[0] != 'undefined') {
+      matrices[1] = matrix;
+      $("#matrix2")
+          .html(matrix.toString())
+          .parent()
+          .show();
+    //} else if ($(this).hasClass('create-first-matrix')) {
+    } else {
+      matrices[0] = matrix;
+      $("#matrix1")
+          .html(matrix.toString())
+          .parent()
+          .show();
+    }
 
-      var mult = mo.multiply(m, mt);
-      console.log(mult.toString());
-      Handlebars.registerHelper('fullName', function(person) {
-  return person.firstName + " " + person.lastName;
-});
+    if (matrices.length >= 2) {
+      var operation = $(this).parent().data('operation');
+      if (operation == 'scalarMult') {
+        $('#scalar-mult-m.created').trigger('click');
+      }
+      if (operation == 'sum') {
+        $('#sum-m.created').trigger('click');
+      }
+      if (operation == 'mult') {
+        $('#mult-m.created').trigger('click');
+      }
+    }
+    $("#operations").show();
+  });
+
+  $("#transpose-m").click(function() {
+    var matrix = matrices[0],
+        transposed = operations.transpose(matrix);
+
+    $("#transposed")
+        .html(transposed.toString())
+        .parent()
+        .show();
+  });
+
+  $("body").on('click', '#sum-m.not-created', function() {
+    var html = printMatrixTable(N, M);
+
+    matrix = new Matrix(N, M);
+
+    $('#second-matrix').data('operation', 'sum').show();
+    $('#second-matrix div.matrix').html(html);
+    $(this)
+        .removeClass('not-created')
+        .addClass('created');
+  });
+
+  $("body").on('click', '#sum-m.created', function() {
+    var matrix1 = matrices[0],
+        matrix2 = matrices[1],
+        sum = operations.add(matrix1, matrix2);
+
+    $(this)
+        .removeClass('created')
+        .addClass('not-created');
+
+    $("#sum")
+        .html(sum.toString())
+        .parent()
+        .show();
+  });
+
+  $('body').on('click', '#scalar-mult-m.not-created', function() {
+    $('#scalar').show();
+    $(this)
+        .removeClass('not-created')
+        .addClass('created');
+
+    $('#second-matrix')
+        .data('operation', '')
+        .hide();
+  });
+
+  $('body').on('click', '#scalar-mult-m.created', function() {
+    var scalar = parseInt($('#scalar').val()),
+        sm = operations.scalarMult(scalar, matrices[0]);
+
+    $(this)
+        .removeClass('created')
+        .addClass('not-created');
+
+    $("#scalar-mult")
+        .html(sm.toString())
+        .parent()
+        .show();
+  });
+
+  $('body').on('click', '#mult-m.not-created', function() {
+    var cols = prompt("How many columns will have the second matrix"),
+        html = printMatrixTable(M, cols);
+
+    matrix = new Matrix(M, cols);
+
+    $('#second-matrix div.matrix').html(html);
+    $('#second-matrix')
+        .data('operation', 'mult')
+        .show();
+
+    $(this)
+        .removeClass('not-created')
+        .addClass('created');
+  });
+
+  $('body').on('click', '#mult-m.created', function() {
+    var matrix1 = matrices[0],
+        matrix2 = matrices[1],
+        mult = operations.multiply(matrix1, matrix2);
+
+    $(this)
+        .removeClass('created')
+        .addClass('not-created');
+
+    $("#mult")
+        .html(mult.toString())
+        .parent()
+        .show();
+  });
+
 });

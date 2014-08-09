@@ -70,20 +70,29 @@ $('body').on('blur', '.count-rows, .count-cols', function() {
   $('body').on('click', '.create-matrix', function() {
     var array = [];
     //var matrix = $(this).parent().hasClass('second-matrix');
-
     $(this).parent().find("input.matrix").each(function() {
       //if (second_matrix) {
         //console.log('ere', second_matrix);
-        matrix.setAt($(this).data('row'), $(this).data('col'), parseInt($(this).val()));
+        var val = parseInt($(this).val());
+        if (typeof val === 'number') {
+          matrix.setAt($(this).data('row'), $(this).data('col'), parseInt($(this).val()));
+        }
+
       //}
       //else {
         //console.log('here');
         //matrix.setAt($(this).data('row'), $(this).data('col'), parseInt($(this).val()));
       //}
     });
-    matrices.push(matrix);
-    if (matrices.length == 2) {
+    //matrices.push(matrix);
+    if (typeof matrices[0] !== 'undefined') {
+      matrices[1] = matrix; }
+    else {
+      matrices[0] = matrix;
+    }
+    if (matrices.length >= 2) {
       var operation = $(this).parent().data('operation');
+      console.log(operation);
       if (operation == 'scalarMult') {
         $('#scalar-mult-m.created').trigger('click');
       }
@@ -96,7 +105,9 @@ $('body').on('blur', '.count-rows, .count-cols', function() {
         $('#mult-m.created').trigger('click');
       }
     }
-    console.log(matrices);
+
+    $("#operations").show();
+    $(".create-matrix").show();
   });
 
   $("#transpose-m").click(function() {
@@ -121,11 +132,12 @@ $('body').on('blur', '.count-rows, .count-cols', function() {
 
     $('#second-matrix').show();
     $('#second-matrix div.matrix').html(html);
-    $('#second-matrix').attr('data-operation', 'sum');
+    //$('#second-matrix').attr('data-operation', 'sum');
+    $('#second-matrix').data('operation', 'sum');
+
     $('#second-matrix .count-rows, #second-matrix .count-cols, #second-matrix .input-matrix').hide();
     $(this).removeClass('not-created');
     $(this).addClass('created');
-    $(this).html('Click here to sum after creating the second matrix');
   });
 
  $("body").on('click', '#sum-m.created', function() {
@@ -133,6 +145,8 @@ $('body').on('blur', '.count-rows, .count-cols', function() {
   var matrix1 = matrices[0];
   var matrix2 = matrices[1];
   var sum = operations.add(matrix1, matrix2);
+  $(this).removeClass('created');
+  $(this).addClass('not-created');
   console.log(sum.toString());
  });
 
@@ -141,22 +155,26 @@ $('body').on('blur', '.count-rows, .count-cols', function() {
   $('#second-matrix').hide();
   $(this).removeClass('not-created');
   $(this).addClass('created');
+  $('#second-matrix').data('operation', '');
  });
 
 $('body').on('click', '#scalar-mult-m.created', function() {
   var scalar = parseInt($('#scalar').val());
   var sm = operations.scalarMult(scalar, matrices[0]);
   console.log(sm.toString());
+  $(this).removeClass('created');
+  $(this).addClass('not-created');
 });
 
 $('body').on('click', '#mult-m.not-created', function() {
-  var sum = '', html = '', i, j;
-  matrix = new Matrix(N, M);
+  var html = '', i, j;
+  var cols = prompt("How many columns will have the second matrix");
+  matrix = new Matrix(M, cols);
 
     var html = '<table>';
-    for (i = 0; i <= N - 1; i++) {
+    for (i = 0; i <= M - 1; i++) {
       html += '<tr>';
-      for (j = 0; j <= M - 1; j++) {
+      for (j = 0; j <= cols - 1; j++) {
         html += "<td><input type='number' data-row='" + i + "' data-col='" + j + "' class='matrix'></td>";
       }
       html += '</tr>';
@@ -165,7 +183,8 @@ $('body').on('click', '#mult-m.not-created', function() {
 
     $('#second-matrix').show();
     $('#second-matrix div.matrix').html(html);
-    $('#second-matrix').attr('data-operation', 'sum');
+    //$('#second-matrix').attr('data-operation', 'mult');
+    $('#second-matrix').data('operation', 'mult');
     $('#second-matrix .count-rows, #second-matrix .count-cols, #second-matrix .input-matrix').hide();
     $(this).removeClass('not-created');
     $(this).addClass('created');
@@ -174,8 +193,11 @@ $('body').on('click', '#mult-m.not-created', function() {
 $('body').on('click', '#mult-m.created', function() {
   var matrix1 = matrices[0];
   var matrix2 = matrices[1];
+  console.log(matrix1.toString(), matrix2.toString());
   var mult = operations.multiply(matrix1, matrix2);
   console.log(mult.toString());
+  $(this).removeClass('created');
+  $(this).addClass('not-created');
 });
 
 });
